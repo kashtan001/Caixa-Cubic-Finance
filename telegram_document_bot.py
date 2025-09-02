@@ -468,7 +468,6 @@ def build_lettera_garanzia(name: str) -> BytesIO:
         fontsize=9
     ))
     try:
-        # Для carta убираем рамку, оставляем только логотип
         doc.build(elems, onFirstPage=draw_logo, onLaterPages=draw_logo)
     except Exception as pdf_err:
         print(f"Ошибка генерации PDF: {pdf_err}")
