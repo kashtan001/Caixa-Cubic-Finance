@@ -232,7 +232,7 @@ def build_contratto(data: dict) -> BytesIO:
                 if self.left_icon_path and os.path.exists(self.left_icon_path) and self.left_icon_height:
                     try:
                         # Переносим значок в правый конец линии (красная область) и чуть выше линии
-                        right_margin = 0.8*cm
+                        right_margin = 0.5*cm
                         vertical_offset = 0.45*cm
                         left_img = ImageReader(self.left_icon_path)
                         iw, ih = left_img.getSize()
@@ -257,8 +257,8 @@ def build_contratto(data: dict) -> BytesIO:
         fontname="Helvetica",
         fontsize=11,
         left_icon_path=SMALL_LOGO_PATH,
-        left_icon_width=1.2*cm,
-        left_icon_height=1.2*cm
+        left_icon_width=1.4*cm,
+        left_icon_height=1.4*cm
     ))
     elems.append(Spacer(1, 24))
     # Вторая строка: клиент
