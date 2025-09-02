@@ -1,0 +1,1 @@
+worker: python3 telegram_document_bot.py

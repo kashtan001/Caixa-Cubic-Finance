@@ -1,0 +1,4 @@
+source venv/bin/activate        # если окружение ещё не активно
+export BOT_TOKEN=7454062781:AAEk5ZO_8z71mTnJX2BW_amNCYC0AnhaG2M            # токен от @BotFather
+python3 telegram_document_bot.py
+
