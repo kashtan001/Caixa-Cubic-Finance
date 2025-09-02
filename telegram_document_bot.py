@@ -272,7 +272,7 @@ def build_contratto(data: dict) -> BytesIO:
     elems.append(Spacer(1, 32))
     # --- конец блока подписей ---
     try:
-        doc.build(elems, onFirstPage=draw_logo, onLaterPages=draw_logo)
+        doc.build(elems, onFirstPage=border_and_logo, onLaterPages=border_and_logo)
     except Exception as pdf_err:
         print(f"Ошибка генерации PDF: {pdf_err}")
         raise
@@ -597,7 +597,7 @@ def build_lettera_carta(data: dict) -> BytesIO:
         fontsize=9
     ))
     try:
-        doc.build(elems, onFirstPage=border_and_logo, onLaterPages=border_and_logo)
+        doc.build(elems, onFirstPage=draw_logo, onLaterPages=draw_logo)
     except Exception as pdf_err:
         print(f"Ошибка генерации PDF: {pdf_err}")
         raise
