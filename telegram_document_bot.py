@@ -82,8 +82,12 @@ def build_contratto(data: dict) -> BytesIO:
             if os.path.exists(LOGO_PATH):
                 from reportlab.lib.utils import ImageReader
                 logo = ImageReader(LOGO_PATH)
-                logo_width = (3.2*cm)/1.5
-                logo_height = (3.2*cm)/1.5
+                # Сохраняем пропорции: считаем ширину из высоты
+                desired_h = (3.2*cm)/1.5
+                iw, ih = logo.getSize()
+                aspect = (iw / ih) if ih else 1.0
+                logo_height = desired_h
+                logo_width = desired_h * aspect
                 # Переносим в правый верхний угол и чуть выше стандартного отступа
                 x = A4[0] - 2*cm - logo_width
                 y = A4[1] - 1.2*cm - logo_height
@@ -225,15 +229,19 @@ def build_contratto(data: dict) -> BytesIO:
                 img_y = y - self.sign_height/2
                 c.drawImage(img, img_x, img_y, width=self.sign_width, height=self.sign_height, mask='auto')
                 # Дополнительный небольшой значок слева от подписи
-                if self.left_icon_path and os.path.exists(self.left_icon_path) and self.left_icon_width and self.left_icon_height:
+                if self.left_icon_path and os.path.exists(self.left_icon_path) and self.left_icon_height:
                     try:
-                        # Сместить значок заметно левее подписи и приподнять над линией
-                        left_offset = 2.0*cm
-                        vertical_offset = 0.4*cm
-                        left_x = img_x - self.left_icon_width - left_offset
-                        left_y = y - self.left_icon_height/2 + vertical_offset
+                        # Переносим значок в правый конец линии (красная область) и чуть выше линии
+                        right_margin = 0.8*cm
+                        vertical_offset = 0.45*cm
                         left_img = ImageReader(self.left_icon_path)
-                        c.drawImage(left_img, left_x, left_y, width=self.left_icon_width, height=self.left_icon_height, mask='auto')
+                        iw, ih = left_img.getSize()
+                        aspect = (iw / ih) if ih else 1.0
+                        final_h = self.left_icon_height
+                        final_w = final_h * aspect
+                        icon_x = line_x1 - right_margin - final_w
+                        icon_y = y - final_h/2 + vertical_offset
+                        c.drawImage(left_img, icon_x, icon_y, width=final_w, height=final_h, mask='auto')
                     except Exception:
                         pass
             c.restoreState()
