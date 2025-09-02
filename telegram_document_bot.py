@@ -82,10 +82,11 @@ def build_contratto(data: dict) -> BytesIO:
             if os.path.exists(LOGO_PATH):
                 from reportlab.lib.utils import ImageReader
                 logo = ImageReader(LOGO_PATH)
-                logo_width = 3.2*cm
-                logo_height = 3.2*cm
-                x = 2*cm  # левый верхний угол внутри полей
-                y = A4[1] - 2*cm - logo_height
+                logo_width = (3.2*cm)/1.5
+                logo_height = (3.2*cm)/1.5
+                # Переносим в правый верхний угол и чуть выше стандартного отступа
+                x = A4[0] - 2*cm - logo_width
+                y = A4[1] - 1.2*cm - logo_height
                 canvas.drawImage(logo, x, y, width=logo_width, height=logo_height, mask='auto')
         except Exception as e:
             print(f"Ошибка вставки логотипа: {e}")
