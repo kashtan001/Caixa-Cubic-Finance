@@ -509,56 +509,56 @@ def build_lettera_carta(data: dict) -> BytesIO:
     )
     elems = []
     # --- Заголовки ---
-    elems.append(Spacer(1, 3.2*cm + 8))  # Отступ под лого (3.2см высота + небольшой отступ)
-    elems.append(Paragraph("UniCredit Bank", header_style))
-    elems.append(Paragraph("Ufficio Clientela Privata", subheader_style))
+    elems.append(Spacer(1, 3.2*cm + 8))  # Отступ под лого (пространство под верхний логотип)
+    elems.append(Paragraph("Caixa Geral de Depósitos", header_style))
+    elems.append(Paragraph("Departamento de Clientes Privados", subheader_style))
     elems.append(Spacer(1, 16))
     # --- Приветствие ---
     name = data['name']
-    elems.append(Paragraph(f"Gentile Cliente,<b>{name}</b>", body_style))
+    elems.append(Paragraph(f"Prezado(a) Cliente, <b>{name}</b>", body_style))
     elems.append(Spacer(1, 8))
     # --- Основной текст ---
-    elems.append(Paragraph("Siamo lieti di comunicarle l'approvazione del suo credito a condizioni speciali:", body_style))
+    elems.append(Paragraph("Temos o prazer de lhe comunicar a aprovação do seu crédito em condições especiais:", body_style))
     elems.append(Spacer(1, 8))
     # --- Параметры кредита ---
     amount = money(data['amount'])
     months = data['duration']
-    tan = f"{data['tan']:.2f}% annuo"
+    tan = f"{data['tan']:.2f}% ao ano"
     payment = money(data['payment'])
-    elems.append(Paragraph(f"- Importo: <b>{amount}</b>", body_style))
-    elems.append(Paragraph(f"- Durata: <b>{months} mese{'i' if int(months)!=1 else ''}</b>", body_style))
-    elems.append(Paragraph(f"- Tasso: <b>{tan}</b>", body_style))
-    elems.append(Paragraph(f"- Rata: <b>{payment} al mese</b>", body_style))
+    elems.append(Paragraph(f"Montante: <b>{amount}</b>", body_style))
+    elems.append(Paragraph(f"Prazo: <b>{months} mês{'es' if int(months)!=1 else ''}</b>", body_style))
+    elems.append(Paragraph(f"Taxa: <b>{tan}</b>", body_style))
+    elems.append(Paragraph(f"Prestação: <b>{payment} por mês</b>", body_style))
     elems.append(Spacer(1, 8))
     # --- Получение средств ---
-    elems.append(Paragraph("Per ricevere i fondi:", body_style))
-    elems.append(Paragraph("1. Aprire un conto credito", body_style))
-    elems.append(Paragraph("2. Attivare la carta di credito (costo <b>140,00 €</b>)", body_style))
+    elems.append(Paragraph("Para receber os fundos:", body_style))
+    elems.append(Paragraph("Abrir uma conta de crédito", body_style))
+    elems.append(Paragraph("Ativar o cartão de crédito (custo <b>170,00 €</b>)", body_style))
     elems.append(Spacer(1, 8))
     # --- Стоимость включает ---
-    elems.append(Paragraph("Il costo include:", body_style))
+    elems.append(Paragraph("O custo inclui:", body_style))
     elems.append(ListFlowable([
-        ListItem(Paragraph("Conto IBAN personale", bullet_style), bulletText="•"),
-        ListItem(Paragraph("Emissione e spedizione della carta", bullet_style), bulletText="•"),
-        ListItem(Paragraph("Servizi digitali", bullet_style), bulletText="•"),
-        ListItem(Paragraph("Assistenza prioritaria", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Conta IBAN pessoal", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Emissão e envio do cartão", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Serviços digitais", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Assistência prioritária", bullet_style), bulletText="•"),
     ], bulletType='bullet', leftIndent=18))
     elems.append(Spacer(1, 8))
     # --- Безопасность ---
-    elems.append(Paragraph("La Sua sicurezza:", body_style))
-    elems.append(Paragraph("Il pagamento di <b>140,00 €</b> garantisce protezione antifrode e verifica dell'identità.", body_style))
+    elems.append(Paragraph("A sua segurança:", body_style))
+    elems.append(Paragraph("O pagamento de <b>170,00 €</b> garante proteção antifraude e verificação de identidade.", body_style))
     elems.append(Spacer(1, 8))
     # --- Вантажи ---
-    elems.append(Paragraph("Vantaggi:", body_style))
+    elems.append(Paragraph("Vantagens:", body_style))
     elems.append(ListFlowable([
-        ListItem(Paragraph("Gestione online del credito", check_style), bulletText="✓"),
+        ListItem(Paragraph("Gestão online do crédito", check_style), bulletText="✓"),
         ListItem(Paragraph("Mobile banking 24/7", check_style), bulletText="✓"),
-        ListItem(Paragraph("Condizioni flessibili", check_style), bulletText="✓"),
+        ListItem(Paragraph("Condições flexíveis", check_style), bulletText="✓"),
     ], bulletType='bullet', leftIndent=18))
     elems.append(Spacer(1, 8))
     # --- Подпись ---
-    elems.append(Paragraph("Cordiali saluti,", body_style))
-    elems.append(Paragraph("UniCredit Banca", body_style))
+    elems.append(Paragraph("Atenciosamente,", body_style))
+    elems.append(Paragraph("Caixa Geral de Depósitos", body_style))
     elems.append(Spacer(1, 30))  # Отступ до нижнего блока
     # --- Ответственный + подпись внизу ---
     class SignatureLine(Flowable):
