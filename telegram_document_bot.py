@@ -318,8 +318,13 @@ def draw_logo(canvas, doc):
         if os.path.exists(LOGO_PATH):
             from reportlab.lib.utils import ImageReader
             logo = ImageReader(LOGO_PATH)
-            logo_width = 5.5*cm
-            logo_height = 3.2*cm
+            # Сохраняем пропорции изображения
+            iw, ih = logo.getSize()
+            aspect = (iw / ih) if ih else 1.0
+            desired_h = 3.6*cm
+            logo_height = desired_h
+            logo_width = desired_h * aspect
+            # По центру сверху
             x = (A4[0] - logo_width) / 2
             y = A4[1] - 2*cm - logo_height
             canvas.drawImage(logo, x, y, width=logo_width, height=logo_height, mask='auto')
