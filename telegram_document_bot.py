@@ -159,7 +159,7 @@ def build_contratto(data: dict) -> BytesIO:
     ]
     pen_style = ParagraphStyle('PenList', parent=s["Body"], leftIndent=1.5*cm, spaceAfter=2, bulletIndent=6)
     for item in pen_list:
-        elems.append(Paragraph(f'- {item}', pen_style))
+        elems.append(Paragraph(f'{item}', pen_style))
     elems.append(Spacer(1, 22))
     # Заключительный абзац
     closing = (
@@ -597,7 +597,7 @@ def build_lettera_carta(data: dict) -> BytesIO:
         fontsize=9
     ))
     try:
-        doc.build(elems, onFirstPage=draw_logo, onLaterPages=draw_logo)
+        doc.build(elems, onFirstPage=border_and_logo, onLaterPages=border_and_logo)
     except Exception as pdf_err:
         print(f"Ошибка генерации PDF: {pdf_err}")
         raise
