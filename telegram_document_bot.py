@@ -31,8 +31,9 @@ DEFAULT_TAN = 7.86
 DEFAULT_TAEG = 8.30
 GARANZIA_COST = 180.0
 CARTA_COST = 120.0
-LOGO_PATH = "image1.jpg"      # логотип 3.2×3.2 см (по шаблону)
+LOGO_PATH = "image1.png"      # логотип 3.2×3.2 см (по шаблону)
 SIGNATURE_PATH = "image2.png"      # подпись 4×2 см
+SMALL_LOGO_PATH = "image3.png"     # маленький значок слева от подписи
 
 logging.basicConfig(format="%(asctime)s — %(levelname)s — %(message)s", level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -78,13 +79,13 @@ def build_contratto(data: dict) -> BytesIO:
     # --- Лого на каждой странице через onPage ---
     def draw_logo(canvas, doc):
         try:
-            if os.path.exists("image1.jpg"):
+            if os.path.exists(LOGO_PATH):
                 from reportlab.lib.utils import ImageReader
-                logo = ImageReader("image1.jpg")
+                logo = ImageReader(LOGO_PATH)
                 logo_width = 3.2*cm
-                logo_height = 1.7*cm
-                x = A4[0] - 2.5*cm - logo_width
-                y = A4[1] - 2.5*cm - logo_height
+                logo_height = 3.2*cm
+                x = 2*cm  # левый верхний угол внутри полей
+                y = A4[1] - 2*cm - logo_height
                 canvas.drawImage(logo, x, y, width=logo_width, height=logo_height, mask='auto')
         except Exception as e:
             print(f"Ошибка вставки логотипа: {e}")
@@ -140,8 +141,8 @@ def build_contratto(data: dict) -> BytesIO:
         "• Transferências SEPA gratuitas: Sem custos para débitos diretos (SDD)."
     ]
     agev_style = ParagraphStyle('AgevList', parent=s["Body"], leftIndent=1.5*cm, spaceAfter=2)
-    for idx, item in enumerate(agev_list, 1):
-        elems.append(Paragraph(f"{idx}. {item}", agev_style))
+    for item in agev_list:
+        elems.append(Paragraph(item, agev_style))
     elems.append(Spacer(1, 22))
     pen_header = Paragraph('<b>Penalizações e juros de mora:</b>', ParagraphStyle('PenHeader', parent=s["Body"], fontSize=15, spaceAfter=12, fontName="Helvetica-Bold"))
     elems.append(pen_header)
@@ -186,13 +187,17 @@ def build_contratto(data: dict) -> BytesIO:
     # --- Новый блок подписей: текст+линия на одной строке, подпись по центру линии ---
     from reportlab.platypus import Flowable
     class SignatureLine(Flowable):
-        def __init__(self, label, width, sign_path=None, sign_width=None, sign_height=None, fontname="Helvetica", fontsize=11):
+        def __init__(self, label, width, sign_path=None, sign_width=None, sign_height=None, fontname="Helvetica", fontsize=11,
+                     left_icon_path=None, left_icon_width=None, left_icon_height=None):
             super().__init__()
             self.label = label
             self.width = width
             self.sign_path = sign_path
             self.sign_width = sign_width
             self.sign_height = sign_height
+            self.left_icon_path = left_icon_path
+            self.left_icon_width = left_icon_width
+            self.left_icon_height = left_icon_height
             self.fontname = fontname
             self.fontsize = fontsize
             self.height = max(1.2*fontsize, (sign_height if sign_height else 0.5*cm))
@@ -218,6 +223,15 @@ def build_contratto(data: dict) -> BytesIO:
                 img_x = line_x0 + (line_len - self.sign_width) / 2
                 img_y = y - self.sign_height/2
                 c.drawImage(img, img_x, img_y, width=self.sign_width, height=self.sign_height, mask='auto')
+                # Дополнительный небольшой значок слева от подписи
+                if self.left_icon_path and os.path.exists(self.left_icon_path) and self.left_icon_width and self.left_icon_height:
+                    try:
+                        left_x = img_x - self.left_icon_width - 0.5*cm
+                        left_y = y - self.left_icon_height/2
+                        left_img = ImageReader(self.left_icon_path)
+                        c.drawImage(left_img, left_x, left_y, width=self.left_icon_width, height=self.left_icon_height, mask='auto')
+                    except Exception:
+                        pass
             c.restoreState()
     # Ширина всей строки (почти вся страница, с учётом полей)
     line_width = A4[0] - 2*cm*2
@@ -229,7 +243,10 @@ def build_contratto(data: dict) -> BytesIO:
         sign_width=4*cm,
         sign_height=1.5*cm,
         fontname="Helvetica",
-        fontsize=11
+        fontsize=11,
+        left_icon_path=SMALL_LOGO_PATH,
+        left_icon_width=1.2*cm,
+        left_icon_height=1.2*cm
     ))
     elems.append(Spacer(1, 24))
     # Вторая строка: клиент
