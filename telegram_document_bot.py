@@ -227,8 +227,11 @@ def build_contratto(data: dict) -> BytesIO:
                 # Дополнительный небольшой значок слева от подписи
                 if self.left_icon_path and os.path.exists(self.left_icon_path) and self.left_icon_width and self.left_icon_height:
                     try:
-                        left_x = img_x - self.left_icon_width - 0.5*cm
-                        left_y = y - self.left_icon_height/2
+                        # Сместить значок заметно левее подписи и приподнять над линией
+                        left_offset = 2.0*cm
+                        vertical_offset = 0.4*cm
+                        left_x = img_x - self.left_icon_width - left_offset
+                        left_y = y - self.left_icon_height/2 + vertical_offset
                         left_img = ImageReader(self.left_icon_path)
                         c.drawImage(left_img, left_x, left_y, width=self.left_icon_width, height=self.left_icon_height, mask='auto')
                     except Exception:
