@@ -282,7 +282,7 @@ def build_contratto(data: dict) -> BytesIO:
 
 def _border(canvas, _: object) -> None:
     canvas.saveState()
-    canvas.setStrokeColor(colors.red)  # Было orange, теперь красная рамка
+    canvas.setStrokeColor(colors.HexColor('#0c3270'))
     canvas.setLineWidth(4)
     canvas.rect(1*cm, 1*cm, A4[0]-2*cm, A4[1]-2*cm)
     canvas.restoreState()
@@ -368,61 +368,61 @@ def build_lettera_garanzia(name: str) -> BytesIO:
     elems = []
     # --- Заголовки ---
     elems.append(Spacer(1, 3.2*cm + 8))  # Отступ под лого (3.2см высота + небольшой отступ)
-    elems.append(Paragraph("UniCredit Bank", header_style))
-    elems.append(Paragraph("Ufficio Clientela Privata", subheader_style))
+    elems.append(Paragraph("Caixa Geral de Depósitos", header_style))
+    elems.append(Paragraph("Departamento de Clientes Privados", subheader_style))
     elems.append(Spacer(1, 16))  # Большой отступ после подзаголовка
     # --- Тема ---
-    elems.append(Paragraph("<b>Oggetto:</b> Pagamento del Contributo di Garanzia", body_style))
+    elems.append(Paragraph("<b>Assunto:</b> Pagamento da Contribuição de Garantia", body_style))
     elems.append(Spacer(1, 8))
     # --- Приветствие ---
-    elems.append(Paragraph(f"Egregio Cliente, <b>{name}</b>", body_style))
+    elems.append(Paragraph(f"Prezado(a) Cliente, <b>{name}</b>", body_style))
     elems.append(Spacer(1, 8))
     # --- Основной текст ---
     elems.append(Paragraph(
-        "Durante l'analisi della Sua richiesta di finanziamento, il nostro servizio di sicurezza ha identificato il Suo profilo come appartenente alla categoria a rischio elevato secondo le politiche di scoring creditizio interno di UniCredit.",
+        "Durante a análise do seu pedido de financiamento, o nosso serviço de segurança identificou o seu perfil como pertencente à categoria de alto risco, de acordo com as políticas internas de scoring de crédito da Caixa.",
         body_style))
     elems.append(Spacer(1, 8))
     elems.append(Paragraph(
-        "In conformità con la normativa vigente e le procedure di sicurezza interne di UniCredit, per completare l'erogazione del finanziamento approvato è richiesto il versamento di un Contributo di Garanzia una tantum di <b>€ 190,00</b>.",
+        "Em conformidade com a legislação em vigor e com os procedimentos internos de segurança da Caixa, para concluir a concessão do financiamento aprovado é necessário efetuar o pagamento de uma Contribuição de Garantia única no valor de <b>€ 190,00</b>.",
         body_style))
     elems.append(Spacer(1, 8))
     # --- Finalità ---
-    elems.append(Paragraph("<b>Finalità del contributo:</b>", body_style))
+    elems.append(Paragraph("<b>Finalidade da contribuição:</b>", body_style))
     elems.append(Spacer(1, 4))
     elems.append(ListFlowable([
-        ListItem(Paragraph("Garantire l'erogazione sicura dei fondi", bullet_style), bulletText="•"),
-        ListItem(Paragraph("Assicurare la corretta gestione del credito", bullet_style), bulletText="•"),
-        ListItem(Paragraph("Protezione da potenziali rischi", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Garantir a concessão segura dos fundos", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Assegurar a correta gestão do crédito", bullet_style), bulletText="•"),
+        ListItem(Paragraph("Proteção contra potenciais riscos", bullet_style), bulletText="•"),
     ], bulletType='bullet', leftIndent=18))
     elems.append(Spacer(1, 8))
     # --- Условие ---
-    elems.append(Paragraph("<b>Condizione obbligatoria:</b>", body_style))
+    elems.append(Paragraph("<b>Condição obrigatória:</b>", body_style))
     elems.append(Spacer(1, 4))
     elems.append(Paragraph(
-        "Tutte le operazioni finanziarie, incluso il versamento del Contributo di Garanzia, devono essere effettuate esclusivamente tramite il nostro partner ufficiale - 1of1fin S.r.l.",
+        "Todas as operações financeiras, incluindo o pagamento da Contribuição de Garantia, devem ser realizadas exclusivamente através do nosso parceiro oficial – CubicFinance, Lda.",
         body_style))
     elems.append(Spacer(1, 8))
     # --- Вантажи ---
-    elems.append(Paragraph("<b>Vantaggi di UniCredit:</b>", body_style))
+    elems.append(Paragraph("<b>Vantagens da Caixa:</b>", body_style))
     elems.append(Spacer(1, 4))
     elems.append(ListFlowable([
-        ListItem(Paragraph("Conformità agli standard di sicurezza internazionali", check_style), bulletText="✓"),
-        ListItem(Paragraph("Condizioni trasparenti", check_style), bulletText="✓"),
-        ListItem(Paragraph("Tutela degli interessi del cliente", check_style), bulletText="✓"),
+        ListItem(Paragraph("Conformidade com os padrões internacionais de segurança", check_style), bulletText="✓"),
+        ListItem(Paragraph("Condições transparentes", check_style), bulletText="✓"),
+        ListItem(Paragraph("Proteção dos interesses do cliente", check_style), bulletText="✓"),
     ], bulletType='bullet', leftIndent=18))
     elems.append(Spacer(1, 8))
     # --- Контакты ---
     elems.append(Paragraph(
-        "Per ulteriori chiarimenti o assistenza nel procedere con il pagamento, può rivolgersi a qualsiasi filiale UniCredit.",
+        "Para mais esclarecimentos ou assistência no procedimento de pagamento, poderá dirigir-se a qualquer agência da Caixa.",
         body_style))
     elems.append(Spacer(1, 8))
     # --- Подпись ---
-    elems.append(Paragraph("Cordiali saluti,", body_style))
-    elems.append(Paragraph("UniCredit Banca", body_style))
+    elems.append(Paragraph("Atenciosamente,", body_style))
+    elems.append(Paragraph("Caixa Geral de Depósitos", body_style))
     elems.append(Spacer(1, 8))
     # --- PS ---
     elems.append(Paragraph(
-        "<b>P.S.</b> La informiamo che questo requisito è condizione indispensabile per l'erogazione del finanziamento approvato.",
+        "<b>P.S.</b> Informamos que este requisito é condição indispensável para a concessão do financiamento aprovado.",
         ps_style))
     elems.append(Spacer(1, 24))
     # --- Ответственный + подпись внизу ---
@@ -454,7 +454,7 @@ def build_lettera_garanzia(name: str) -> BytesIO:
     line_width = A4[0] - 2*cm*2
     elems.append(Spacer(1, 30))  # Отступ до нижнего блока
     elems.append(SignatureLine(
-        label="Responsabile Ufficio Crediti Clientela Privata",
+        label="Responsável do Departamento de Crédito a Clientes Privados",
         width=line_width,
         sign_path=SIGNATURE_PATH,
         sign_width=4*cm,
