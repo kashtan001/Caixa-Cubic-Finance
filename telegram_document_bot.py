@@ -283,7 +283,7 @@ def build_contratto(data: dict) -> BytesIO:
 def _border(canvas, _: object) -> None:
     canvas.saveState()
     canvas.setStrokeColor(colors.HexColor('#0c3270'))
-    canvas.setLineWidth(4)
+    canvas.setLineWidth(5)
     canvas.rect(1*cm, 1*cm, A4[0]-2*cm, A4[1]-2*cm)
     canvas.restoreState()
 
