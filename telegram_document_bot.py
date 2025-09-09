@@ -129,6 +129,7 @@ def build_contratto(data: dict) -> BytesIO:
         f'• Prazo: {fmt_num(data["duration"], 0)} meses',
         f'• Prestação mensal: {fmt_num(data["payment"])} €',
         f'• Comissão de processamento de prestação: 0 €',
+        f'• Taxa administrativa: 90 €',
         f'• Prémio de seguro obrigatório: 150,00 € (gerido por CubicFinance, Lda.)',
     ]
     param_style = ParagraphStyle('ParamList', parent=s["Body"], leftIndent=1.5*cm, spaceAfter=2)
