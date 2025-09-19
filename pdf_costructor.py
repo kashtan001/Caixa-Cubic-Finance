@@ -403,7 +403,7 @@ def _add_images_to_pdf(pdf_bytes: bytes, template_name: str) -> BytesIO:
             col_637 = (637 - 1) % 25
             
             x_637 = (col_637 - 1) * cell_width_mm * mm
-            y_637 = (297 - (row_637 * cell_height_mm + cell_height_mm) - 0.5 * cell_height_mm - 2.5 * cell_height_mm) * mm  # на 2.5 клетки вниз
+            y_637 = (297 - (row_637 * cell_height_mm + cell_height_mm) - 0.5 * cell_height_mm - 2.5 * cell_height_mm + 0.5 * cell_height_mm) * mm  # на 2.5 клетки вниз + 0.5 клетки вверх
             
             overlay_canvas.drawImage("sing_2.png", x_637, y_637, 
                                    width=sing_scaled_width*mm, height=sing_scaled_height*mm,
@@ -421,7 +421,7 @@ def _add_images_to_pdf(pdf_bytes: bytes, template_name: str) -> BytesIO:
             col_628 = (628 - 1) % 25
             
             x_628 = col_628 * cell_width_mm * mm
-            y_628 = (297 - (row_628 * cell_height_mm + cell_height_mm) - 2 * cell_height_mm - 1.5 * cell_height_mm) * mm  # на 1.5 клетки вниз
+            y_628 = (297 - (row_628 * cell_height_mm + cell_height_mm) - 2 * cell_height_mm - 1.5 * cell_height_mm + 0.5 * cell_height_mm) * mm  # на 1.5 клетки вниз + 0.5 клетки вверх
             
             overlay_canvas.drawImage("sing_1.png", x_628, y_628, 
                                    width=sing1_scaled_width*mm, height=sing1_scaled_height*mm,
@@ -432,8 +432,8 @@ def _add_images_to_pdf(pdf_bytes: bytes, template_name: str) -> BytesIO:
             seal_width_mm = seal_img.width * 0.264583
             seal_height_mm = seal_img.height * 0.264583
             
-            seal_scaled_width = seal_width_mm / 7
-            seal_scaled_height = seal_height_mm / 7
+            seal_scaled_width = (seal_width_mm / 7) * 1.3  # +30%
+            seal_scaled_height = (seal_height_mm / 7) * 1.3  # +30%
             
             row_682 = (682 - 1) // 25
             col_682 = (682 - 1) % 25
@@ -457,7 +457,7 @@ def _add_images_to_pdf(pdf_bytes: bytes, template_name: str) -> BytesIO:
             overlay_canvas.drawString(x_page_num-2, y_page_num-2, "2")
             
             overlay_canvas.save()
-            print("🖼️ Добавлены изображения для contratto через ReportLab API: company.png (как в carta, +30%, -1/2 клетки вниз), carta_logo.png (как в carta, клетка 71), sing_2.png, sing_1.png, seal.png")
+            print("🖼️ Добавлены изображения для contratto через ReportLab API: company.png (как в carta, +30%, -1/2 клетки вниз), carta_logo.png (как в carta, клетка 71), sing_2.png (+0.5 клетки вверх), sing_1.png (+0.5 клетки вверх), seal.png (+30%)")
         
         # Объединяем PDF с overlay
         overlay_buffer.seek(0)
