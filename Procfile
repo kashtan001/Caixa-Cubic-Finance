@@ -1,1 +1,2 @@
+release: apt-get update && apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 libjpeg-dev libopenjp2-7-dev libffi-dev shared-mime-info fonts-dejavu-core fontconfig
 worker: python3 telegram_document_bot.py
